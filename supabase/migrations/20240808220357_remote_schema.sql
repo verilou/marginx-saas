@@ -6,7 +6,7 @@ drop policy "Can view own user data." on "public"."users";
 
 alter type "public"."subscription_status" rename to "subscription_status__old_version_to_be_dropped";
 
-create type "public"."subscription_status" as enum ('trialing', 'active', 'canceled', 'incomplete', 'incomplete_expired', 'past_due', 'unpaid');
+create type "public"."subscription_status" as enum ('trialing', 'active', 'canceled', 'incomplete', 'incomplete_expired', 'past_due', 'unpaid', 'paused');
 
 alter table "public"."subscriptions" alter column status type "public"."subscription_status" using status::text::"public"."subscription_status";
 
