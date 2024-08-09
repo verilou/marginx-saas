@@ -15,9 +15,15 @@ type OAuthProviders = {
 export default function OauthSignIn() {
   const oAuthProviders: OAuthProviders[] = [
     {
-      name: 'github',
-      displayName: 'GitHub',
-      icon: <Github className="h-5 w-5" />
+      name: 'google',
+      displayName: 'Google',
+      icon: (
+        <img
+          src="/Google__G__logo.svg"
+          alt="google.com Logo"
+          className="h-8 text-white"
+        />
+      )
     }
     /* Add desired OAuth providers here */
   ];
