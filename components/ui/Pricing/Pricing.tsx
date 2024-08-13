@@ -143,7 +143,7 @@ export default function Pricing({ user, products, subscription }: Props) {
               )}
             </div>
           </div>
-          <div className="mt-12 space-y-0 sm:mt-16 flex flex-wrap justify-center gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0">
+          <div className="mt-12 space-y-0 sm:mt-16 flex flex-wrap justify-center gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 min-h-96">
             {products.map((product) => {
               const price = product?.prices?.find(
                 (price) => price.interval === billingInterval
@@ -158,7 +158,7 @@ export default function Pricing({ user, products, subscription }: Props) {
                 <div
                   key={product.id}
                   className={cn(
-                    'flex flex-col rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                    'flex flex-col rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900 pb-20 relative',
                     {
                       'border border-pink-500': subscription
                         ? product.name === subscription?.prices?.products?.name
@@ -187,7 +187,7 @@ export default function Pricing({ user, products, subscription }: Props) {
                       type="button"
                       loading={priceIdLoading === price.id}
                       onClick={() => handleStripeCheckout(price)}
-                      className="block w-full py-2 mt-8 text-sm font-semibold text-center text-white rounded-md hover:bg-zinc-900"
+                      className="left-0 right-0 absolute bottom-6 ml-6 mr-6 mt-8 text-sm font-semibold text-white rounded-md hover:bg-zinc-900"
                     >
                       {subscription ? 'Manage' : 'Subscribe'}
                     </Button>
