@@ -4,7 +4,7 @@ import cn from 'classnames';
 import React, { forwardRef, useRef, ButtonHTMLAttributes } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
-import LoadingDots from '@/components/ui/LoadingDots';
+import LoadingDots from '@/components/ui/Saas/LoadingDots';
 
 import styles from './Button.module.css';
 
@@ -16,7 +16,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   Component?: React.ComponentType;
 }
 
-const Button = forwardRef<HTMLButtonElement, Props>((props, buttonRef) => {
+const SaasButton = forwardRef<HTMLButtonElement, Props>((props, buttonRef) => {
   const {
     className,
     variant = 'flat',
@@ -61,6 +61,6 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, buttonRef) => {
     </Component>
   );
 });
-Button.displayName = 'Button';
+SaasButton.displayName = 'Button';
 
-export default Button;
+export default SaasButton;

@@ -1,13 +1,20 @@
 import { Metadata } from 'next';
-import Footer from '@/components/ui/Footer';
-import Navbar from '@/components/ui/Navbar';
-import { Toaster } from '@/components/ui/Toasts/toaster';
+import Footer from '@/components/ui/Saas/Footer';
+import Navbar from '@/components/ui/Saas/Navbar';
+import { Toaster } from '@/components/ui/Saas/Toasts/toaster';
 import { PropsWithChildren, Suspense } from 'react';
 import { getURL } from '@/utils/helpers';
 import 'styles/main.css';
+import { Inter as FontSans } from 'next/font/google';
+import { cn } from '@/utils';
 
 const title = 'Next.js Subscription Starter';
 const description = 'Brought to you by Vercel, Stripe, and Supabase.';
+
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans'
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(getURL()),
@@ -22,7 +29,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className="bg-black">
+      <body
+        className={cn(
+          'min-h-screen bg-black font-sans antialiased',
+          fontSans.variable
+        )}
+      >
         <Navbar />
         <main
           id="skip"

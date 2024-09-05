@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/ui/Button';
+import SaasButton from '@/components/ui/Saas/Button';
 import Link from 'next/link';
 import { signInWithPassword } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
@@ -56,14 +56,14 @@ export default function PasswordSignIn({
               className="w-full p-3 rounded-md bg-zinc-800"
             />
           </div>
-          <Button
+          <SaasButton
             variant="slim"
             type="submit"
             className="mt-1"
             loading={isSubmitting}
           >
             Sign in
-          </Button>
+          </SaasButton>
         </div>
       </form>
       <p>

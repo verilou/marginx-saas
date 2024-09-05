@@ -1,30 +1,28 @@
 'use client';
 
-import Button from '@/components/ui/Button';
+import SaasButton from '@/components/ui/Saas/Button';
+import React from 'react';
 import Link from 'next/link';
-import { requestPasswordUpdate } from '@/utils/auth-helpers/server';
+import { signUp } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import OauthSignIn from './OauthSignIn';
+import Separator from './Separator';
 
 // Define prop type with allowEmail boolean
-interface ForgotPasswordProps {
+interface SignUpProps {
   allowEmail: boolean;
   redirectMethod: string;
-  disableButton?: boolean;
 }
 
-export default function ForgotPassword({
-  allowEmail,
-  redirectMethod,
-  disableButton
-}: ForgotPasswordProps) {
+export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
   const router = redirectMethod === 'client' ? useRouter() : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsSubmitting(true); // Disable the button while the request is being handled
-    await handleRequest(e, requestPasswordUpdate, router);
+    await handleRequest(e, signUp, router);
     setIsSubmitting(false);
   };
 
@@ -48,18 +46,27 @@ export default function ForgotPassword({
               autoCorrect="off"
               className="w-full p-3 rounded-md bg-zinc-800"
             />
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              placeholder="Password"
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              className="w-full p-3 rounded-md bg-zinc-800"
+            />
           </div>
-          <Button
+          <SaasButton
             variant="slim"
             type="submit"
             className="mt-1"
             loading={isSubmitting}
-            disabled={disableButton}
           >
-            Send Email
-          </Button>
+            Sign up
+          </SaasButton>
         </div>
       </form>
+      <p>Already have an account?</p>
       <p>
         <Link href="/signin/password_signin" className="font-light text-sm">
           Sign in with email and password
@@ -72,11 +79,8 @@ export default function ForgotPassword({
           </Link>
         </p>
       )}
-      <p>
-        <Link href="/signin/signup" className="font-light text-sm">
-          Don't have an account? Sign up
-        </Link>
-      </p>
+      <Separator text="Third-party sign-on" />
+      <OauthSignIn />
     </div>
   );
 }

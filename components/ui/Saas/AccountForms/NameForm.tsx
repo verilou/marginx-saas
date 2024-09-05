@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
+import SaasButton from '@/components/ui/Saas/Button';
+import Card from '@/components/ui/Saas/Card';
 import { updateName } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
@@ -30,14 +30,14 @@ export default function NameForm({ userName }: { userName: string }) {
       footer={
         <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
           <p className="pb-4 sm:pb-0">64 characters maximum</p>
-          <Button
+          <SaasButton
             variant="slim"
             type="submit"
             form="nameForm"
             loading={isSubmitting}
           >
             Update Name
-          </Button>
+          </SaasButton>
         </div>
       }
     >

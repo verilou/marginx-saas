@@ -8,14 +8,14 @@ import {
   getDefaultSignInView,
   getRedirectMethod
 } from '@/utils/auth-helpers/settings';
-import Card from '@/components/ui/Card';
-import PasswordSignIn from '@/components/ui/AuthForms/PasswordSignIn';
-import EmailSignIn from '@/components/ui/AuthForms/EmailSignIn';
-import Separator from '@/components/ui/AuthForms/Separator';
-import OauthSignIn from '@/components/ui/AuthForms/OauthSignIn';
-import ForgotPassword from '@/components/ui/AuthForms/ForgotPassword';
-import UpdatePassword from '@/components/ui/AuthForms/UpdatePassword';
-import SignUp from '@/components/ui/AuthForms/Signup';
+import Card from '@/components/ui/Saas/Card';
+import PasswordSignIn from '@/components/ui/Saas/AuthForms/PasswordSignIn';
+import EmailSignIn from '@/components/ui/Saas/AuthForms/EmailSignIn';
+import Separator from '@/components/ui/Saas/AuthForms/Separator';
+import OauthSignIn from '@/components/ui/Saas/AuthForms/OauthSignIn';
+import ForgotPassword from '@/components/ui/Saas/AuthForms/ForgotPassword';
+import UpdatePassword from '@/components/ui/Saas/AuthForms/UpdatePassword';
+import SignUp from '@/components/ui/Saas/AuthForms/Signup';
 
 export default async function SignIn({
   params,

@@ -7,8 +7,8 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport
-} from '@/components/ui/Toasts/toast';
-import { useToast } from '@/components/ui/Toasts/use-toast';
+} from '@/components/ui/Saas/Toasts/toast';
+import { useToast } from '@/components/ui/Saas/Toasts/use-toast';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -26,8 +26,8 @@ export function Toaster() {
     if (error || status) {
       toast({
         title: error
-          ? error ?? 'Hmm... Something went wrong.'
-          : status ?? 'Alright!',
+          ? (error ?? 'Hmm... Something went wrong.')
+          : (status ?? 'Alright!'),
         description: error ? error_description : status_description,
         variant: error ? 'destructive' : undefined
       });

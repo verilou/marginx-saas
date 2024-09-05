@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/ui/Button';
-import LogoCloud from '@/components/ui/LogoCloud';
+import SaasButton from '@/components/ui/Saas/Button';
+import LogoCloud from '@/components/ui/Saas/LogoCloud';
 import type { Tables } from '@/types_db';
 import { getStripe } from '@/utils/stripe/client';
 import { checkoutWithStripe } from '@/utils/stripe/server';
@@ -182,7 +182,7 @@ export default function Pricing({ user, products, subscription }: Props) {
                         /{billingInterval}
                       </span>
                     </p>
-                    <Button
+                    <SaasButton
                       variant="slim"
                       type="button"
                       loading={priceIdLoading === price.id}
@@ -190,7 +190,7 @@ export default function Pricing({ user, products, subscription }: Props) {
                       className="left-0 right-0 absolute bottom-6 ml-6 mr-6 mt-8 text-sm font-semibold text-white rounded-md hover:bg-zinc-900"
                     >
                       {subscription ? 'Manage' : 'Subscribe'}
-                    </Button>
+                    </SaasButton>
                   </div>
                 </div>
               );
