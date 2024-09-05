@@ -7,6 +7,7 @@ import Logo from '@/components/icons/Logo';
 import { usePathname, useRouter } from 'next/navigation';
 import { getRedirectMethod } from '@/utils/auth-helpers/settings';
 import s from './Navbar.module.css';
+import { ModeToggle } from '@/components/ui/ModeToggle';
 
 interface NavlinksProps {
   user?: any;
@@ -50,6 +51,7 @@ export default function Navlinks({ user }: NavlinksProps) {
             Sign In
           </Link>
         )}
+        <ModeToggle />
       </div>
     </div>
   );
