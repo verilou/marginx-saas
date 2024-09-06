@@ -15,6 +15,10 @@ export const getSubscription = cache(async (supabase: SupabaseClient) => {
     .in('status', ['trialing', 'active'])
     .maybeSingle();
 
+  if (error) {
+    console.error('Error fetching subscription:', error.message);
+  }
+
   return subscription;
 });
 
@@ -26,6 +30,9 @@ export const getProducts = cache(async (supabase: SupabaseClient) => {
     .eq('prices.active', true)
     .order('metadata->index')
     .order('unit_amount', { referencedTable: 'prices' });
+  if (error) {
+    console.error('Error fetching products:', error.message);
+  }
 
   return products;
 });
