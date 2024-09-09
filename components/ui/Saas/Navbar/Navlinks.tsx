@@ -8,9 +8,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { getRedirectMethod } from '@/utils/auth-helpers/settings';
 import s from './Navbar.module.css';
 import { ModeToggle } from '@/components/ui/ModeToggle';
+import { User } from '@supabase/supabase-js';
 
 interface NavlinksProps {
-  user?: any;
+  user?: User;
 }
 
 export default function Navlinks({ user }: NavlinksProps) {

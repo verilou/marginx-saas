@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   ColumnDef,
@@ -13,7 +13,7 @@ import {
   getFilteredRowModel,
   VisibilityState
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
