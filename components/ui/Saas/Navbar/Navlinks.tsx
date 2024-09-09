@@ -11,7 +11,7 @@ import { ModeToggle } from '@/components/ui/ModeToggle';
 import { User } from '@supabase/supabase-js';
 
 interface NavlinksProps {
-  user?: User;
+  user?: User | null;
 }
 
 export default function Navlinks({ user }: NavlinksProps) {
