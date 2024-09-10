@@ -1,6 +1,5 @@
 'use client';
 
-import SaasButton from '@/components/ui/Saas/Button';
 import React from 'react';
 import Link from 'next/link';
 import { signUp } from '@/utils/auth-helpers/server';
@@ -9,6 +8,9 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import OauthSignIn from './OauthSignIn';
 import Separator from './Separator';
+import { Button } from '../../button';
+import { Loader2 } from 'lucide-react';
+import { Input } from '../../input';
 
 // Define prop type with allowEmail boolean
 interface SignUpProps {
@@ -36,7 +38,7 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
         <div className="grid gap-2">
           <div className="grid gap-1">
             <label htmlFor="email">Email</label>
-            <input
+            <Input
               id="email"
               placeholder="name@example.com"
               type="email"
@@ -44,26 +46,26 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="w-full p-3 rounded-md bg-zinc-800"
             />
             <label htmlFor="password">Password</label>
-            <input
+            <Input
               id="password"
               placeholder="Password"
               type="password"
               name="password"
               autoComplete="current-password"
-              className="w-full p-3 rounded-md bg-zinc-800"
             />
           </div>
-          <SaasButton
-            variant="slim"
-            type="submit"
-            className="mt-1"
-            loading={isSubmitting}
-          >
-            Sign up
-          </SaasButton>
+          <Button type="submit" className="mt-1">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              'Sign up'
+            )}
+          </Button>
         </div>
       </form>
       <p>Already have an account?</p>

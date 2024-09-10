@@ -1,11 +1,12 @@
 'use client';
 
-import SaasButton from '@/components/ui/Saas/Button';
 import Link from 'next/link';
 import { signInWithEmail } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 // Define prop type with allowPassword boolean
 interface EmailSignInProps {
@@ -38,7 +39,7 @@ export default function EmailSignIn({
         <div className="grid gap-2">
           <div className="grid gap-1">
             <label htmlFor="email">Email</label>
-            <input
+            <Input
               id="email"
               placeholder="name@example.com"
               type="email"
@@ -46,18 +47,16 @@ export default function EmailSignIn({
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="w-full p-3 rounded-md bg-zinc-800"
             />
           </div>
-          <SaasButton
-            variant="slim"
+          <Button
             type="submit"
             className="mt-1"
-            loading={isSubmitting}
             disabled={disableButton}
+            loading={isSubmitting}
           >
             Sign in
-          </SaasButton>
+          </Button>
         </div>
       </form>
       {allowPassword && (

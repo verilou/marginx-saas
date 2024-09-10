@@ -33,7 +33,7 @@ export default async function Account() {
           </p>
         </div>
       </div>
-      <div className="p-4">
+      <div className="flex flex-col gap-2 w-11/12 max-w-3xl mx-auto">
         <CustomerPortalForm subscription={subscription} />
         <NameForm userName={userDetails?.full_name ?? ''} />
         <EmailForm userEmail={user.email} />

@@ -1,9 +1,10 @@
 'use client';
 
-import SaasButton from '@/components/ui/Saas/Button';
 import { signInWithOAuth } from '@/utils/auth-helpers/client';
 import { type Provider } from '@supabase/supabase-js';
 import { useState } from 'react';
+import { Button } from '../../button';
+import { Loader2 } from 'lucide-react';
 
 type OAuthProviders = {
   name: Provider;
@@ -39,15 +40,19 @@ export default function OauthSignIn() {
           onSubmit={(e) => handleSubmit(e)}
         >
           <input type="hidden" name="provider" value={provider.name} />
-          <SaasButton
-            variant="slim"
-            type="submit"
-            className="w-full"
-            loading={isSubmitting}
-          >
-            <span className="mr-2">{provider.icon}</span>
-            <span>{provider.displayName}</span>
-          </SaasButton>
+          <Button type="submit" className="w-full">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              <>
+                <span className="mr-2">{provider.icon}</span>
+                <span>{provider.displayName}</span>
+              </>
+            )}
+          </Button>
         </form>
       ))}
     </div>

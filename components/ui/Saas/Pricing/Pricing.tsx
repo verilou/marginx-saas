@@ -149,7 +149,7 @@ export default function Pricing({ user, products, subscription }: Props) {
               )}
             </div>
           </div>
-          <div className="mt-12 space-y-0 sm:mt-16 flex justify-center gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0">
+          <div className="mt-12 flex flex-col md:flex-row gap-8">
             {products.map((product) => {
               const price = product?.prices?.find(
                 (price) => price.interval === billingInterval
@@ -162,12 +162,12 @@ export default function Pricing({ user, products, subscription }: Props) {
               }).format((price?.unit_amount || 0) / 100);
 
               return (
-                <Card key={product.id} className="flex flex-col max-w-96">
+                <Card key={product.id} className="flex flex-col basis-1/2">
                   <CardHeader>
                     <CardTitle>{product.name}</CardTitle>
                     <CardDescription>{product.description}</CardDescription>
                   </CardHeader>
-                  <CardContent className="mb-10">
+                  <CardContent className="mb-10 flex-grow">
                     <span className="text-5xl font-extrabold">
                       {priceString}
                     </span>

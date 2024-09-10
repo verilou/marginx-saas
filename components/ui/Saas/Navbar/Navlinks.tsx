@@ -9,6 +9,16 @@ import { getRedirectMethod } from '@/utils/auth-helpers/settings';
 import s from './Navbar.module.css';
 import { ModeToggle } from '@/components/ui/ModeToggle';
 import { User } from '@supabase/supabase-js';
+import { Menu } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from '../../sheet';
+import { Button } from '../../button';
+import { useState } from 'react';
 
 interface NavlinksProps {
   user?: User | null;
@@ -16,14 +26,17 @@ interface NavlinksProps {
 
 export default function Navlinks({ user }: NavlinksProps) {
   const router = getRedirectMethod() === 'client' ? useRouter() : null;
-
+  const [isOpen, setIsOpen] = useState(false);
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
   return (
-    <div className="relative flex flex-row justify-between py-4 align-center md:py-6">
-      <div className="flex items-center flex-1">
-        <Link href="/" className={s.logo} aria-label="Logo">
-          <Logo />
-        </Link>
-        <nav className="ml-6 space-x-2 lg:block">
+    <header>
+      <nav className="sticky top-0 hidden md:flex h-16 justify-end gap-4 border-b bg-background px-4 md:px-6">
+        <div className="flex items-center gap-4 mr-auto">
+          <Link href="/" className={s.logo} aria-label="Logo">
+            <Logo />
+          </Link>
           <Link href="/">Pricing</Link>
           {user && (
             <>
@@ -31,19 +44,66 @@ export default function Navlinks({ user }: NavlinksProps) {
               <Link href="/dashboard">Dashboard</Link>
             </>
           )}
-        </nav>
-      </div>
-      <div className="flex justify-end space-x-8">
-        {user ? (
-          <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
-            <input type="hidden" name="pathName" value={usePathname()} />
-            <button type="submit">Sign out</button>
-          </form>
-        ) : (
-          <Link href="/signin">Sign In</Link>
-        )}
-        <ModeToggle />
-      </div>
-    </div>
+        </div>
+        <div className="flex items-center gap-4">
+          {user ? (
+            <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
+              <input type="hidden" name="pathName" value={usePathname()} />
+              <button type="submit">Sign out</button>
+            </form>
+          ) : (
+            <Link href="/signin">Sign In</Link>
+          )}
+
+          <ModeToggle />
+        </div>
+      </nav>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline" size="icon" className="md:hidden mt-4 ml-3">
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left">
+          <div className="flex flex-col space-y-4 mt-4">
+            <SheetHeader>
+              <SheetTitle>MarginX</SheetTitle>
+            </SheetHeader>
+            <Link
+              onClick={closeMenu}
+              href="/"
+              className={s.logo}
+              aria-label="Logo"
+            >
+              <Logo />
+            </Link>
+            <Link onClick={closeMenu} href="/">
+              Pricing
+            </Link>
+            {user ? (
+              <>
+                <Link onClick={closeMenu} href="/account">
+                  Account
+                </Link>
+                <Link onClick={closeMenu} href="/dashboard">
+                  Dashboard
+                </Link>
+                <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
+                  <input type="hidden" name="pathName" value={usePathname()} />
+                  <button onClick={closeMenu} type="submit">
+                    Sign out
+                  </button>
+                </form>
+              </>
+            ) : (
+              <Link onClick={closeMenu} href="/signin">
+                Sign In
+              </Link>
+            )}
+          </div>
+        </SheetContent>
+      </Sheet>
+    </header>
   );
 }

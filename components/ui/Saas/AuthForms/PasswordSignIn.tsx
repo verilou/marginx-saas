@@ -1,11 +1,13 @@
 'use client';
 
-import SaasButton from '@/components/ui/Saas/Button';
 import Link from 'next/link';
 import { signInWithPassword } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { Input } from '../../input';
+import { Button } from '../../button';
+import { Loader2 } from 'lucide-react';
 
 // Define prop type with allowEmail boolean
 interface PasswordSignInProps {
@@ -36,7 +38,7 @@ export default function PasswordSignIn({
         <div className="grid gap-2">
           <div className="grid gap-1">
             <label htmlFor="email">Email</label>
-            <input
+            <Input
               id="email"
               placeholder="name@example.com"
               type="email"
@@ -44,26 +46,26 @@ export default function PasswordSignIn({
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="w-full p-3 rounded-md bg-zinc-800"
             />
             <label htmlFor="password">Password</label>
-            <input
+            <Input
               id="password"
               placeholder="Password"
               type="password"
               name="password"
               autoComplete="current-password"
-              className="w-full p-3 rounded-md bg-zinc-800"
             />
           </div>
-          <SaasButton
-            variant="slim"
-            type="submit"
-            className="mt-1"
-            loading={isSubmitting}
-          >
-            Sign in
-          </SaasButton>
+          <Button type="submit" className="mt-1">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              'Sign in'
+            )}
+          </Button>
         </div>
       </form>
       <p>
