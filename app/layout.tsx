@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Footer from '@/components/ui/Saas/Footer';
 import Navbar from '@/components/ui/Saas/Navbar';
 import { Toaster } from '@/components/ui/Saas/Toasts/toaster';
 import { PropsWithChildren, Suspense } from 'react';
@@ -46,7 +45,6 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           >
             {children}
           </main>
-          <Footer />
           <Suspense>
             <Toaster />
           </Suspense>

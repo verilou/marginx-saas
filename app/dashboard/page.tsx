@@ -51,10 +51,10 @@ export default async function Dashboard() {
     <section className="mb-32">
       <div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 sm:pt-24 lg:px-8">
         <div className="sm:align-center sm:flex sm:flex-col">
-          <h1 className="text-1xl font-extrabold text-white sm:text-6xl">
+          <h1 className="text-1xl font-extrabold sm:text-6xl">
             Welcome to the dashboard
           </h1>
-          <p className="max-w-2xl mt-5 text-xl text-zinc-200 sm:text-2xl">
+          <p className="max-w-2xl mt-5 text-xl sm:text-2xl">
             All the informations you need.
           </p>
         </div>

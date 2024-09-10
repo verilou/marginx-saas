@@ -17,11 +17,7 @@ export default function OauthSignIn() {
       name: 'google',
       displayName: 'Google',
       icon: (
-        <img
-          src="/Google__G__logo.svg"
-          alt="google.com Logo"
-          className="h-8 text-white"
-        />
+        <img src="/Google__G__logo.svg" alt="google.com Logo" className="h-8" />
       )
     }
     /* Add desired OAuth providers here */
