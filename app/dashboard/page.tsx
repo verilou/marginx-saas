@@ -1,13 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { columns } from './column';
 import { DataTable } from './data-table';
 import {
@@ -21,44 +15,94 @@ import {
 
 import { MapPin } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
-type Payment = {
+interface CarAd {
   id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
-};
+  photo: string;
+  brand: string;
+  model: string;
+  year: number;
+  price: number;
+  mileage: number;
+  color: string;
+  engineType: 'Electric' | 'Diesel' | 'Petrol';
+  gearbox: 'Manual' | 'Automatic';
+  location: string;
+  publishDate: string;
+}
 
-const getData = (): Payment[] => [
+const getData = (): CarAd[] => [
   {
-    id: 'm5gr84i9',
-    amount: 316,
-    status: 'success',
-    email: 'ken99@yahoo.com'
+    id: '1',
+    photo: 'https://placehold.co/120x80',
+    brand: 'Toyota',
+    model: 'Corolla',
+    year: 2019,
+    price: 15000,
+    mileage: 30000,
+    color: 'Silver',
+    engineType: 'Petrol',
+    gearbox: 'Automatic',
+    location: 'New York',
+    publishDate: '2023-05-15'
   },
   {
-    id: '3u1reuv4',
-    amount: 242,
-    status: 'success',
-    email: 'Abe45@gmail.com'
+    id: '2',
+    photo: 'https://placehold.co/120x80',
+    brand: 'Tesla',
+    model: 'Model 3',
+    year: 2021,
+    price: 40000,
+    mileage: 10000,
+    color: 'Red',
+    engineType: 'Electric',
+    gearbox: 'Automatic',
+    location: 'Los Angeles',
+    publishDate: '2023-05-14'
   },
   {
-    id: 'derv1ws0',
-    amount: 837,
-    status: 'processing',
-    email: 'Monserrat44@gmail.com'
+    id: '3',
+    photo: 'https://placehold.co/120x80',
+    brand: 'Ford',
+    model: 'Focus',
+    year: 2020,
+    price: 18000,
+    mileage: 25000,
+    color: 'Blue',
+    engineType: 'Petrol',
+    gearbox: 'Manual',
+    location: 'Chicago',
+    publishDate: '2023-05-13'
   },
   {
-    id: '5kma53ae',
-    amount: 874,
-    status: 'success',
-    email: 'Silas22@gmail.com'
+    id: '4',
+    photo: 'https://placehold.co/120x80',
+    brand: 'BMW',
+    model: 'X5',
+    year: 2022,
+    price: 55000,
+    mileage: 5000,
+    color: 'Black',
+    engineType: 'Diesel',
+    gearbox: 'Automatic',
+    location: 'Miami',
+    publishDate: '2023-05-12'
   },
   {
-    id: 'bhqecj4p',
-    amount: 721,
-    status: 'failed',
-    email: 'carmella@hotmail.com'
+    id: '5',
+    photo: 'https://placehold.co/120x80',
+    brand: 'Honda',
+    model: 'Civic',
+    year: 2018,
+    price: 14000,
+    mileage: 40000,
+    color: 'White',
+    engineType: 'Petrol',
+    gearbox: 'Manual',
+    location: 'Seattle',
+    publishDate: '2023-05-11'
   }
 ];
 
@@ -68,18 +112,24 @@ export default function Dashboard() {
 
   const priceHistoryData = [
     { name: 'Jan', total: 25000 },
-    { name: 'Feb', total: 24800 },
+    { name: 'Feb', total: 20000 },
     { name: 'Mar', total: 25200 },
-    { name: 'Apr', total: 25500 },
+    { name: 'Apr', total: 27000 },
     { name: 'May', total: 25300 },
-    { name: 'Jun', total: 25800 }
+    { name: 'Jun', total: 23000 }
   ];
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Car Analytics Dashboard</h1>
-
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex w-full max-w-sm items-center space-x-2">
+          <Input
+            type="text"
+            placeholder="Search for a car model, brand or color"
+          />
+          <Button type="submit">Search</Button>
+        </div>
         <Card className="col-span-full">
           <CardHeader>
             <CardTitle>Price History</CardTitle>
@@ -170,6 +220,22 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
+        <Card className="col-auto">
+          <CardHeader>
+            <CardTitle>Latest Listing</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p className="text-lg font-bold">2019 Model S</p>
+              <p className="text-sm">Added: 2 hours ago</p>
+              <p className="text-sm font-medium">Price: $27,500</p>
+              <a href="#" className="text-blue-500">
+                View Details
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="col-span-full">
           <CardHeader>
             <CardTitle>Estimated Price by Mileage</CardTitle>
@@ -182,7 +248,9 @@ export default function Dashboard() {
               onValueChange={(value) => setMileage(value[0])}
             />
             <div className="mt-4">
-              <p className="text-sm font-medium">Estimated Price</p>
+              <p className="text-sm font-medium">
+                Estimated Price for {mileage}km
+              </p>
               <p className="text-2xl font-bold">
                 ${(25000 - mileage * 0.05).toFixed(2)}
               </p>
@@ -244,31 +312,9 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
-
-        <Card className="col-auto">
-          <CardHeader>
-            <CardTitle>Latest Listing</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <p className="text-lg font-bold">2019 Model S</p>
-              <p className="text-sm">Added: 2 hours ago</p>
-              <p className="text-sm font-medium">Price: $27,500</p>
-              <a href="#" className="text-blue-500">
-                View Details
-              </a>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="col-span-full">
-          <CardHeader>
-            <CardTitle>Dashboard</CardTitle>
-            <CardDescription>Analyse a car model performance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DataTable columns={columns} data={data} />
-          </CardContent>
-        </Card>
+        <div className="col-span-full">
+          <DataTable columns={columns} data={data} />
+        </div>
       </div>
     </div>
   );
