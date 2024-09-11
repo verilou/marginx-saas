@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -9,13 +10,17 @@ import {
 } from '@/components/ui/card';
 import { columns } from './column';
 import { DataTable } from './data-table';
-import { Area, AreaChart, XAxis, YAxis } from 'recharts';
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart';
-import { Activity, DollarSign } from 'lucide-react';
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from 'recharts';
+
+import { MapPin } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
 
 type Payment = {
   id: string;
@@ -24,289 +29,247 @@ type Payment = {
   email: string;
 };
 
-async function getData(): Promise<Payment[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: 'm5gr84i9',
-      amount: 316,
-      status: 'success',
-      email: 'ken99@yahoo.com'
-    },
-    {
-      id: '3u1reuv4',
-      amount: 242,
-      status: 'success',
-      email: 'Abe45@gmail.com'
-    },
-    {
-      id: 'derv1ws0',
-      amount: 837,
-      status: 'processing',
-      email: 'Monserrat44@gmail.com'
-    },
-    {
-      id: '5kma53ae',
-      amount: 874,
-      status: 'success',
-      email: 'Silas22@gmail.com'
-    },
-    {
-      id: 'bhqecj4p',
-      amount: 721,
-      status: 'failed',
-      email: 'carmella@hotmail.com'
-    }
-  ];
-}
+const getData = (): Payment[] => [
+  {
+    id: 'm5gr84i9',
+    amount: 316,
+    status: 'success',
+    email: 'ken99@yahoo.com'
+  },
+  {
+    id: '3u1reuv4',
+    amount: 242,
+    status: 'success',
+    email: 'Abe45@gmail.com'
+  },
+  {
+    id: 'derv1ws0',
+    amount: 837,
+    status: 'processing',
+    email: 'Monserrat44@gmail.com'
+  },
+  {
+    id: '5kma53ae',
+    amount: 874,
+    status: 'success',
+    email: 'Silas22@gmail.com'
+  },
+  {
+    id: 'bhqecj4p',
+    amount: 721,
+    status: 'failed',
+    email: 'carmella@hotmail.com'
+  }
+];
 
-export default async function Dashboard() {
-  const data = await getData();
+export default function Dashboard() {
+  const data = getData();
+  const [mileage, setMileage] = useState(50000);
+
+  const priceHistoryData = [
+    { name: 'Jan', total: 25000 },
+    { name: 'Feb', total: 24800 },
+    { name: 'Mar', total: 25200 },
+    { name: 'Apr', total: 25500 },
+    { name: 'May', total: 25300 },
+    { name: 'Jun', total: 25800 }
+  ];
 
   return (
-    <div className="m-auto md:w-3/4 px-4 gap-4 flex flex-wrap">
-      <div className="w-3/4">
-        <Card className="max-w" x-chunk="charts-01-chunk-7">
-          <CardHeader className="space-y-0 pb-0">
-            <CardDescription>Base value for 10000 km</CardDescription>
-            <CardTitle className="flex items-baseline gap-1 text-1xl tabular-nums">
-              18456
-              <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
-                €
-              </span>
-            </CardTitle>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6">Car Analytics Dashboard</h1>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="col-span-full">
+          <CardHeader>
+            <CardTitle>Price History</CardTitle>
           </CardHeader>
-          <CardContent className="p-0">
-            <ChartContainer
-              config={{
-                time: {
-                  label: 'Time',
-                  color: 'hsl(var(--chart-2))'
-                }
-              }}
-            >
-              <AreaChart
-                accessibilityLayer
-                data={[
-                  {
-                    date: '2024-01-01',
-                    time: 8.5
-                  },
-                  {
-                    date: '2024-01-02',
-                    time: 7.2
-                  },
-                  {
-                    date: '2024-01-03',
-                    time: 8.1
-                  },
-                  {
-                    date: '2024-01-04',
-                    time: 6.2
-                  },
-                  {
-                    date: '2024-01-05',
-                    time: 5.2
-                  },
-                  {
-                    date: '2024-01-06',
-                    time: 8.1
-                  },
-                  {
-                    date: '2024-01-07',
-                    time: 7.0
-                  }
-                ]}
-                margin={{
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0
-                }}
-              >
-                <XAxis dataKey="date" hide />
-                <YAxis domain={['dataMin - 5', 'dataMax + 2']} hide />
+          <CardContent className="pl-2">
+            <ResponsiveContainer width="100%" height={350}>
+              <AreaChart data={priceHistoryData}>
+                <XAxis
+                  dataKey="name"
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `$${value}`}
+                />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="rounded-lg border bg-background p-2 shadow-sm">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="flex flex-col">
+                              <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                Month
+                              </span>
+                              <span className="font-bold text-muted-foreground">
+                                {payload[0].payload.name}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                Price
+                              </span>
+                              <span className="font-bold">
+                                ${payload[0].value}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#8884d8"
+                  fill="url(#gradient)"
+                  strokeWidth={2}
+                />
                 <defs>
-                  <linearGradient id="fillTime" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor="var(--color-time)"
-                      stopOpacity={0.8}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor="var(--color-time)"
-                      stopOpacity={0.1}
-                    />
+                  <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <Area
-                  dataKey="time"
-                  type="natural"
-                  fill="url(#fillTime)"
-                  fillOpacity={0.4}
-                  stroke="var(--color-time)"
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                  formatter={(value) => (
-                    <div className="flex min-w-[120px] items-center text-xs text-muted-foreground">
-                      Time in bed
-                      <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                        {value}
-                        <span className="font-normal text-muted-foreground">
-                          hr
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                />
               </AreaChart>
-            </ChartContainer>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
-      </div>
-      <div className="gap-4 flex md:flex-col flex-row items-stretch">
+
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Price today</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <CardTitle>Confidence Indicator</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+            <div className="text-4xl font-bold text-green-500">85%</div>
+            <p className="text-sm text-muted-foreground">
+              Based on 500 listings
             </p>
           </CardContent>
         </Card>
-        <div>
-          <Card className="max-w" x-chunk="charts-01-chunk-7">
-            <CardHeader className="space-y-0 pb-0">
-              <CardDescription>Base value for 10000 km</CardDescription>
-              <CardTitle className="flex items-baseline gap-1 text-1xl tabular-nums">
-                18456
-                <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
-                  €
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ChartContainer
-                config={{
-                  time: {
-                    label: 'Time',
-                    color: 'hsl(var(--chart-2))'
-                  }
-                }}
-              >
-                <AreaChart
-                  accessibilityLayer
-                  data={[
-                    {
-                      date: '2024-01-01',
-                      time: 8.5
-                    },
-                    {
-                      date: '2024-01-02',
-                      time: 7.2
-                    },
-                    {
-                      date: '2024-01-03',
-                      time: 8.1
-                    },
-                    {
-                      date: '2024-01-04',
-                      time: 6.2
-                    },
-                    {
-                      date: '2024-01-05',
-                      time: 5.2
-                    },
-                    {
-                      date: '2024-01-06',
-                      time: 8.1
-                    },
-                    {
-                      date: '2024-01-07',
-                      time: 7.0
-                    }
-                  ]}
-                  margin={{
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0
-                  }}
-                >
-                  <XAxis dataKey="date" hide />
-                  <YAxis domain={['dataMin - 5', 'dataMax + 2']} hide />
-                  <defs>
-                    <linearGradient id="fillTime" x1="0" y1="0" x2="0" y2="1">
-                      <stop
-                        offset="5%"
-                        stopColor="var(--color-time)"
-                        stopOpacity={0.8}
-                      />
-                      <stop
-                        offset="95%"
-                        stopColor="var(--color-time)"
-                        stopOpacity={0.1}
-                      />
-                    </linearGradient>
-                  </defs>
-                  <Area
-                    dataKey="time"
-                    type="natural"
-                    fill="url(#fillTime)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-time)"
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                    formatter={(value) => (
-                      <div className="flex min-w-[120px] items-center text-xs text-muted-foreground">
-                        Time in bed
-                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                          {value}
-                          <span className="font-normal text-muted-foreground">
-                            hr
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  />
-                </AreaChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-        </div>
-        <div>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+573</div>
-              <p className="text-xs text-muted-foreground">
-                +201 since last hour
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
 
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Dashboard</CardTitle>
-          <CardDescription>Analyse a car model performance</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Ad Volume (Last Month)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl font-bold">237</div>
+            <p className="text-sm text-muted-foreground">New listings</p>
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-full">
+          <CardHeader>
+            <CardTitle>Estimated Price by Mileage</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Slider
+              defaultValue={[mileage]}
+              max={200000}
+              step={1000}
+              onValueChange={(value) => setMileage(value[0])}
+            />
+            <div className="mt-4">
+              <p className="text-sm font-medium">Estimated Price</p>
+              <p className="text-2xl font-bold">
+                ${(25000 - mileage * 0.05).toFixed(2)}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Value Increase</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl font-bold text-green-500">+3.2%</div>
+            <p className="text-sm text-muted-foreground">
+              Over the last 6 months
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Most Listed Region</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center">
+              <MapPin className="mr-2 h-4 w-4" />
+              <span className="text-xl font-bold">New York</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Based on listing density
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Listing Extremes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <div>
+                <p className="text-sm font-medium">Most Expensive</p>
+                <p className="text-lg font-bold">
+                  $35,000 -{' '}
+                  <a href="#" className="text-blue-500">
+                    View Listing
+                  </a>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Cheapest</p>
+                <p className="text-lg font-bold">
+                  $18,500 -{' '}
+                  <a href="#" className="text-blue-500">
+                    View Listing
+                  </a>
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="col-auto">
+          <CardHeader>
+            <CardTitle>Latest Listing</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p className="text-lg font-bold">2019 Model S</p>
+              <p className="text-sm">Added: 2 hours ago</p>
+              <p className="text-sm font-medium">Price: $27,500</p>
+              <a href="#" className="text-blue-500">
+                View Details
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="col-span-full">
+          <CardHeader>
+            <CardTitle>Dashboard</CardTitle>
+            <CardDescription>Analyse a car model performance</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DataTable columns={columns} data={data} />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
