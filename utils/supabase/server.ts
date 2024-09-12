@@ -1,6 +1,8 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { Database } from '@/types_db';
+import { Database } from '@/types/types_db';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { SubscriptionWithProduct } from '@/types/types_props';
 
 // Define a function to create a Supabase client for server-side operations
 // The function takes a cookie store created with next/headers cookies as an argument
@@ -35,4 +37,27 @@ export const createClient = () => {
       }
     }
   );
+};
+
+export const getUser = async (supabase: SupabaseClient) => {
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+  return user;
+};
+
+export const getSubscription = async (
+  supabase: SupabaseClient
+): Promise<SubscriptionWithProduct> => {
+  const { data: subscription, error } = await supabase
+    .from('subscriptions')
+    .select('*, prices(*, products(*))')
+    .in('status', ['trialing', 'active'])
+    .maybeSingle();
+
+  if (error) {
+    console.error('Error fetching subscription:', error.message);
+  }
+
+  return subscription;
 };

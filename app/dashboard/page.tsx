@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { columns } from './column';
 import { DataTable } from './data-table';
@@ -17,6 +17,7 @@ import { MapPin } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { addGivenUrlParams } from '@/lib/utils';
 
 interface CarAd {
   id: string;
@@ -109,6 +110,21 @@ const getData = (): CarAd[] => [
 export default function Dashboard() {
   const data = getData();
   const [mileage, setMileage] = useState(50000);
+
+  console.log('loaded dashboard');
+
+  useEffect(() => {
+    console.log('Data:', data);
+    console.log(addGivenUrlParams('/api/analytics', { action: 'test' }));
+    const fetchAnalytics = async () => {
+      const response = await fetch(
+        addGivenUrlParams('/api/analytics', { action: 'test' })
+      );
+      const data = await response.json();
+      console.log('Analytics:', data);
+    };
+    fetchAnalytics();
+  }, []);
 
   const priceHistoryData = [
     { name: 'Jan', total: 25000 },

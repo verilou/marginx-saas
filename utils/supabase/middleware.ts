@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
+import { getSubscription, getUser } from './server';
 
 export const createClient = (request: NextRequest) => {
   // Create an unmodified response
@@ -55,6 +56,48 @@ export const updateSession = async (request: NextRequest) => {
       request: {
         headers: request.headers
       }
+    });
+  }
+};
+
+export const checkAuth = async (request: NextRequest) => {
+  console.log('Checking auth');
+  const { supabase } = createClient(request);
+  try {
+    const user = await getUser(supabase);
+    console.log('User:', user);
+    if (!user) {
+      console.log('No user found');
+      return NextResponse.redirect(
+        new URL('/signin/password_signin', request.url),
+        {
+          status: 301
+        }
+      );
+    }
+  } catch (userError) {
+    console.log('Error fetching user:', userError);
+    return NextResponse.redirect(
+      new URL('/signin/password_signin', request.url),
+      {
+        status: 301
+      }
+    );
+  }
+};
+
+export const checkSubscription = async (request: NextRequest) => {
+  const { supabase } = createClient(request);
+
+  const subscription = await getSubscription(supabase);
+
+  if (
+    !subscription ||
+    !subscription?.status ||
+    !['trialing', 'active'].includes(subscription?.status)
+  ) {
+    return NextResponse.redirect(new URL('/', request.url), {
+      status: 301
     });
   }
 };
