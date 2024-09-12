@@ -1,4 +1,4 @@
-import { Tables } from './types_db';
+import { Tables } from '@/types/types_db';
 import { User } from '@supabase/supabase-js';
 
 export type Subscription = Tables<'subscriptions'>;
