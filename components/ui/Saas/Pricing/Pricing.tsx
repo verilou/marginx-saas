@@ -16,7 +16,7 @@ import {
   CardTitle
 } from '../../card';
 import { BillingInterval, Price, PricingProps } from '@/types/types_props';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../tabs';
+import { Tabs, TabsList, TabsTrigger } from '../../tabs';
 
 export default function Pricing({
   user,
@@ -104,7 +104,7 @@ export default function Pricing({
               plans unlock additional features.
             </p>
             <Tabs defaultValue="month" className="self-center mt-6">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="flex w-fit m-auto">
                 {intervals.includes('month') && (
                   <TabsTrigger
                     value="month"
