@@ -6,7 +6,7 @@ import { dashboard } from '@/app/dashboard/middleware';
 export async function middleware(request: NextRequest) {
   if (
     request.nextUrl.pathname.startsWith('/dashboard') ||
-    request.nextUrl.pathname.startsWith('/api')
+    request.nextUrl.pathname.startsWith('/api/analytics')
   ) {
     return await dashboard(request);
   }
