@@ -61,11 +61,9 @@ export const updateSession = async (request: NextRequest) => {
 };
 
 export const checkAuth = async (request: NextRequest) => {
-  console.log('Checking auth');
   const { supabase } = createClient(request);
   try {
     const user = await getUser(supabase);
-    console.log('User:', user);
     if (!user) {
       console.log('No user found');
       return NextResponse.redirect(
