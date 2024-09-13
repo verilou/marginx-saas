@@ -138,15 +138,15 @@ export default function Dashboard() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Car Analytics Dashboard</h1>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="flex w-full max-w-sm items-center space-x-2">
+      <div className="grid gap-6  grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex col-span-full w-full max-w-sm items-center space-x-2">
           <Input
             type="text"
             placeholder="Search for a car model, brand or color"
           />
           <Button type="submit">Search</Button>
         </div>
-        <Card className="col-span-full">
+        <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>Price History</CardTitle>
           </CardHeader>
@@ -213,29 +213,29 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+        <div className="grid gap-6 col">
+          <Card>
+            <CardHeader>
+              <CardTitle>Confidence Indicator</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold text-green-500">85%</div>
+              <p className="text-sm text-muted-foreground">
+                Based on 500 listings
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Confidence Indicator</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-green-500">85%</div>
-            <p className="text-sm text-muted-foreground">
-              Based on 500 listings
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Ad Volume (Last Month)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold">237</div>
-            <p className="text-sm text-muted-foreground">New listings</p>
-          </CardContent>
-        </Card>
-
+          <Card>
+            <CardHeader>
+              <CardTitle>Ad Volume (Last Month)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold">237</div>
+              <p className="text-sm text-muted-foreground">New listings</p>
+            </CardContent>
+          </Card>
+        </div>
         <Card className="col-auto">
           <CardHeader>
             <CardTitle>Latest Listing</CardTitle>
@@ -251,8 +251,7 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
-
-        <Card className="col-span-full">
+        <Card>
           <CardHeader>
             <CardTitle>Estimated Price by Mileage</CardTitle>
           </CardHeader>
