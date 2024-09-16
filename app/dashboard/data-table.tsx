@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   ColumnDef,
@@ -43,23 +43,21 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet';
+import { CarAd } from '@/types/types_analitycs';
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends CarAd, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends CarAd, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -80,7 +78,7 @@ export function DataTable<TData, TValue>({
     }
   });
 
-  const [filters, setFilters] = React.useState({
+  const [filters, setFilters] = useState({
     brand: '',
     model: '',
     year: '',
@@ -279,25 +277,27 @@ export function DataTable<TData, TValue>({
               </thead>
               <tbody className="[&_tr:last-child]:border-0">
                 {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <tr
-                      key={row.id}
-                      data-state={row.getIsSelected() && 'selected'}
-                      className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <td
-                          key={cell.id}
-                          className="p-4 align-middle [&:has([role=checkbox])]:pr-0"
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))
+                  table.getRowModel().rows.map((row) => {
+                    return (
+                      <tr
+                        key={row.id}
+                        data-state={row.getIsSelected() && 'selected'}
+                        className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <td
+                            key={cell.id}
+                            className="p-4 align-middle [&:has([role=checkbox])]:pr-0"
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td colSpan={columns.length} className="h-24 text-center">

@@ -18,110 +18,30 @@ import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { addGivenUrlParams } from '@/lib/utils';
-
-interface CarAd {
-  id: string;
-  photo: string;
-  brand: string;
-  model: string;
-  year: number;
-  price: number;
-  mileage: number;
-  color: string;
-  engineType: 'Electric' | 'Diesel' | 'Petrol';
-  gearbox: 'Manual' | 'Automatic';
-  location: string;
-  publishDate: string;
-}
-
-const getData = (): CarAd[] => [
-  {
-    id: '1',
-    photo: 'https://placehold.co/120x80',
-    brand: 'Toyota',
-    model: 'Corolla',
-    year: 2019,
-    price: 15000,
-    mileage: 30000,
-    color: 'Silver',
-    engineType: 'Petrol',
-    gearbox: 'Automatic',
-    location: 'New York',
-    publishDate: '2023-05-15'
-  },
-  {
-    id: '2',
-    photo: 'https://placehold.co/120x80',
-    brand: 'Tesla',
-    model: 'Model 3',
-    year: 2021,
-    price: 40000,
-    mileage: 10000,
-    color: 'Red',
-    engineType: 'Electric',
-    gearbox: 'Automatic',
-    location: 'Los Angeles',
-    publishDate: '2023-05-14'
-  },
-  {
-    id: '3',
-    photo: 'https://placehold.co/120x80',
-    brand: 'Ford',
-    model: 'Focus',
-    year: 2020,
-    price: 18000,
-    mileage: 25000,
-    color: 'Blue',
-    engineType: 'Petrol',
-    gearbox: 'Manual',
-    location: 'Chicago',
-    publishDate: '2023-05-13'
-  },
-  {
-    id: '4',
-    photo: 'https://placehold.co/120x80',
-    brand: 'BMW',
-    model: 'X5',
-    year: 2022,
-    price: 55000,
-    mileage: 5000,
-    color: 'Black',
-    engineType: 'Diesel',
-    gearbox: 'Automatic',
-    location: 'Miami',
-    publishDate: '2023-05-12'
-  },
-  {
-    id: '5',
-    photo: 'https://placehold.co/120x80',
-    brand: 'Honda',
-    model: 'Civic',
-    year: 2018,
-    price: 14000,
-    mileage: 40000,
-    color: 'White',
-    engineType: 'Petrol',
-    gearbox: 'Manual',
-    location: 'Seattle',
-    publishDate: '2023-05-11'
-  }
-];
+import { AnalyticsApi, CarAd } from '@/types/types_analitycs';
 
 export default function Dashboard() {
-  const data = getData();
+  const [ads, setAds] = useState<CarAd[]>([]);
   const [mileage, setMileage] = useState(50000);
 
-  console.log('loaded dashboard');
-
   useEffect(() => {
-    console.log('Data:', data);
-    console.log(addGivenUrlParams('/api/analytics', { action: 'test' }));
     const fetchAnalytics = async () => {
       const response = await fetch(
-        addGivenUrlParams('/api/analytics', { action: 'test' })
+        addGivenUrlParams('/api/analytics', { action: 'listing' })
       );
-      const data = await response.json();
-      console.log('Analytics:', data);
+      const data = (await response.json()) as AnalyticsApi;
+      console.log('Analytics:', data.results);
+      const colors: string[] = data.results.reduce((prev: string[], acc) => {
+        console.log(prev);
+        if (!prev.includes(acc.color) && acc.color !== null) {
+          prev.push(acc.color);
+        }
+        return prev;
+      }, []);
+
+      console.log(colors);
+
+      setAds(data.results);
     };
     fetchAnalytics();
   }, []);
@@ -328,7 +248,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
         <div className="col-span-full">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={ads} />
         </div>
       </div>
     </div>

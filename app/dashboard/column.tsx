@@ -1,36 +1,23 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-
-import {
-  ArrowUpDown,
-  Calendar,
-  Car,
-  DollarSign,
-  Gauge,
-  MapPin
-} from 'lucide-react';
+import { CarAd, colors, engineType } from '@/types/types_analitycs';
+import { ArrowUpDown, Calendar, Car, Euro, Gauge, MapPin } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import { colorsList } from './constants';
+import { timeSince } from '@/utils/helpers';
+
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export interface CarAd {
-  id: string;
-  photo: string;
-  brand: string;
-  model: string;
-  year: number;
-  price: number;
-  mileage: number;
-  color: string;
-  engineType: 'Electric' | 'Diesel' | 'Petrol';
-  gearbox: 'Manual' | 'Automatic';
-  location: string;
-  publishDate: string;
-}
+
+const handleOpenNewTabs = (url: string) => {
+  window.open(url, '_blank');
+  window.focus();
+};
 
 export const columns: ColumnDef<CarAd>[] = [
   {
@@ -53,15 +40,34 @@ export const columns: ColumnDef<CarAd>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'photo',
+    accessorKey: 'image_urls_small',
     header: 'Photo',
-    cell: ({ row }) => (
-      <img
-        src={row.getValue('photo')}
-        alt={`${row.getValue('brand')} ${row.getValue('model')}`}
-        className="w-20 h-auto rounded-md"
-      />
-    )
+    cell: ({ row }) => {
+      const photos = row.getValue('image_urls_small') as string | null;
+      let photo: string = 'null';
+      if (photos !== null && photos.length > 0) {
+        photo = JSON.parse(photos.replace(/'/g, '"'))[0];
+      }
+
+      if (photo === 'null') {
+        return (
+          <img
+            onClick={() => handleOpenNewTabs(row.getValue('ad_url'))}
+            src="https://via.placeholder.com/150"
+            alt={`${row.getValue('brand')} ${row.getValue('model')}`}
+            className="w-20 cursor-pointer h-auto rounded-md"
+          />
+        );
+      }
+      return (
+        <img
+          src={photo}
+          onClick={() => handleOpenNewTabs(row.original.ad_url)}
+          alt={`${row.getValue('brand')} ${row.getValue('model')}`}
+          className="w-20 h-auto cursor-pointer rounded-md"
+        />
+      );
+    }
   },
   {
     accessorKey: 'brand',
@@ -91,7 +97,7 @@ export const columns: ColumnDef<CarAd>[] = [
     )
   },
   {
-    accessorKey: 'year',
+    accessorKey: 'model_year',
     header: ({ column }) => {
       return (
         <Button
@@ -106,7 +112,7 @@ export const columns: ColumnDef<CarAd>[] = [
     cell: ({ row }) => (
       <div className="flex items-center">
         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-        <span>{row.getValue('year')}</span>
+        <span>{row.getValue('model_year')}</span>
       </div>
     )
   },
@@ -125,8 +131,15 @@ export const columns: ColumnDef<CarAd>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center font-medium text-green-600">
-        <DollarSign className="mr-2 h-4 w-4" />
-        <span>{row.getValue('price')}</span>
+        {/*
+
+          This is a workaround for a bug in the table library. Check this issue for more info and future updates:
+
+          https://github.com/TanStack/table/issues/4382
+
+        */}
+        <span>{(row.getValue('price') as string).slice(1, -1)}</span>
+        <Euro className="mr-2 h-4 w-4" />
       </div>
     )
   },
@@ -146,34 +159,67 @@ export const columns: ColumnDef<CarAd>[] = [
     cell: ({ row }) => (
       <div className="flex items-center">
         <Gauge className="mr-2 h-4 w-4 text-muted-foreground" />
-        <span>{row.getValue('mileage')} mi</span>
+        <span>{row.getValue('mileage')} km</span>
       </div>
     )
   },
   {
     accessorKey: 'color',
     header: 'Color',
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <div
-          className="w-4 h-4 rounded-full mr-2"
-          style={{ backgroundColor: row.getValue('color') }}
-        />
-        <span>{row.getValue('color')}</span>
-      </div>
-    )
+    cell: ({ row }) => {
+      {
+        /*
+
+          This is a workaround for a bug in the table library. Check this issue for more info and future updates:
+
+          https://github.com/TanStack/table/issues/4382
+
+        */
+      }
+      const color = row.getValue('color') as colors;
+
+      return (
+        <div className="flex items-center">
+          <div
+            className="w-4 h-4 rounded-full mr-2"
+            style={{
+              backgroundColor: colorsList[color],
+              border: 'gray 1px solid'
+            }}
+          />
+          <span>{row.getValue('color')}</span>
+        </div>
+      );
+    }
   },
   {
-    accessorKey: 'engineType',
+    accessorKey: 'fuel',
     header: 'Engine Type',
     cell: ({ row }) => {
-      const engineType = row.getValue('engineType') as string;
+      /*
+
+          This is a workaround for a bug in the table library. Check this issue for more info and future updates:
+
+          https://github.com/TanStack/table/issues/4382
+
+      */
+      const egineTypeMap: { [key: string]: engineType } = {
+        1: 'petrol',
+        2: 'diesel',
+        3: 'LPG',
+        4: 'electric',
+        5: 'other',
+        6: 'hybrid',
+        7: 'CNG'
+      };
+      const engineTypeIndex = row.getValue('fuel') as string;
+      const engineType = egineTypeMap[engineTypeIndex];
       return (
         <Badge
           variant={
-            engineType === 'Electric'
+            engineType === 'electric'
               ? 'default'
-              : engineType === 'Diesel'
+              : engineType === 'diesel'
                 ? 'secondary'
                 : 'outline'
           }
@@ -186,20 +232,33 @@ export const columns: ColumnDef<CarAd>[] = [
   {
     accessorKey: 'gearbox',
     header: 'Gearbox',
-    cell: ({ row }) => <div>{row.getValue('gearbox')}</div>
+    cell: ({ row }) => {
+      const gearBoxIndex = row.getValue('gearbox') as number;
+      const gearBoxValue = ['Manuelle', 'Automatique'][gearBoxIndex - 1];
+      return <div>{gearBoxValue}</div>;
+    }
   },
   {
-    accessorKey: 'location',
+    accessorKey: 'city_1',
     header: 'Location',
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-        <span>{row.getValue('location')}</span>
-      </div>
-    )
+    cell: ({ row }) => {
+      return (
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() =>
+            handleOpenNewTabs(
+              `https://www.google.fr/maps/place/${row.original.city_1}`
+            )
+          }
+        >
+          <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span>{row.getValue('city_1')}</span>
+        </div>
+      );
+    }
   },
   {
-    accessorKey: 'publishDate',
+    accessorKey: 'published_at',
     header: ({ column }) => {
       return (
         <Button
@@ -211,6 +270,8 @@ export const columns: ColumnDef<CarAd>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue('publishDate')}</div>
+    cell: ({ row }) => {
+      return <div>{timeSince(new Date(row.getValue('published_at')))}</div>;
+    }
   }
 ];

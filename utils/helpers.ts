@@ -1,4 +1,5 @@
 import type { Tables } from '@/types/types_db';
+import { formatDistanceToNow } from 'date-fns';
 
 type Price = Tables<'prices'>;
 
@@ -131,3 +132,7 @@ export const getErrorRedirect = (
     disableButton,
     arbitraryParams
   );
+
+export const timeSince = (date: Date): string => {
+  return formatDistanceToNow(date, { addSuffix: true });
+};
