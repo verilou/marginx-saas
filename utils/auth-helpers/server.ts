@@ -4,7 +4,6 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getURL, getErrorRedirect, getStatusRedirect } from 'utils/helpers';
-import { getAuthTypes } from 'utils/auth-helpers/settings';
 
 function isValidEmail(email: string) {
   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -53,14 +52,11 @@ export async function signInWithEmail(formData: FormData) {
     shouldCreateUser: true
   };
 
-  // If allowPassword is false, do not create a new user
-  const { allowPassword } = getAuthTypes();
-  if (allowPassword) options.shouldCreateUser = false;
   const { data, error } = await supabase.auth.signInWithOtp({
     email,
     options: options
   });
-  console.log(error, data);
+
   if (error) {
     redirectPath = getErrorRedirect(
       '/signin/email_signin',
