@@ -60,7 +60,7 @@ export async function signInWithEmail(formData: FormData) {
     email,
     options: options
   });
-
+  console.log(error, data);
   if (error) {
     redirectPath = getErrorRedirect(
       '/signin/email_signin',
