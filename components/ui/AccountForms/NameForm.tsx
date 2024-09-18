@@ -11,9 +11,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from '../../card';
-import { Input } from '../../input';
-import { Button } from '../../button';
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function NameForm({ userName }: { userName: string }) {
   const router = useRouter();

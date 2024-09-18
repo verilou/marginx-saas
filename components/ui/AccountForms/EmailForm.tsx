@@ -13,7 +13,7 @@ import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '../../input';
+import { Input } from '@/components/ui/input';
 
 export default function EmailForm({
   userEmail
