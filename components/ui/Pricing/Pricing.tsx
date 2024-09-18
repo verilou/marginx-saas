@@ -5,7 +5,7 @@ import { checkoutWithStripe } from '@/utils/stripe/server';
 import { getErrorRedirect } from '@/utils/helpers';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Button } from '../../button';
+import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import {
   Card,
@@ -14,9 +14,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from '../../card';
+} from '@/components/ui/card';
 import { BillingInterval, Price, PricingProps } from '@/types/types_props';
-import { Tabs, TabsList, TabsTrigger } from '../../tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function Pricing({
   user,

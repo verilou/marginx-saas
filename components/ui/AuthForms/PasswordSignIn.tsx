@@ -1,35 +1,36 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
-import { signUp } from '@/utils/auth-helpers/server';
+import { signInWithPassword } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import OauthSignIn from './OauthSignIn';
-import Separator from './Separator';
-import { Button } from '../../button';
+import React, { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import { Input } from '../../input';
+import { useTranslations } from 'next-intl';
 
-// Define prop type with allowEmail boolean
-interface SignUpProps {
+interface PasswordSignInProps {
   allowEmail: boolean;
   redirectMethod: string;
 }
 
-export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
+export default function PasswordSignIn({
+  allowEmail,
+  redirectMethod
+}: PasswordSignInProps) {
+  const t = useTranslations('PasswordSignIn');
   const router = redirectMethod === 'client' ? useRouter() : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setIsSubmitting(true); // Disable the button while the request is being handled
-    await handleRequest(e, signUp, router);
+    setIsSubmitting(true);
+    await handleRequest(e, signInWithPassword, router);
     setIsSubmitting(false);
   };
 
   return (
-    <div className="my-8">
+    <div>
       <form
         noValidate={true}
         className="mb-4"
@@ -37,20 +38,20 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
       >
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('email')}</label>
             <Input
               id="email"
-              placeholder="name@example.com"
+              placeholder={t('emailPlaceholder')}
               type="email"
               name="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
             />
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('password')}</label>
             <Input
               id="password"
-              placeholder="Password"
+              placeholder={t('passwordPlaceholder')}
               type="password"
               name="password"
               autoComplete="current-password"
@@ -60,29 +61,31 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
+                {t('pleaseWait')}
               </>
             ) : (
-              'Sign up'
+              t('signIn')
             )}
           </Button>
         </div>
       </form>
-      <p>Already have an account?</p>
       <p>
-        <Link href="/signin/password_signin" className="font-light text-sm">
-          Sign in with email and password
+        <Link href="/signin/forgot_password" className="font-light text-sm">
+          {t('forgotPassword')}
         </Link>
       </p>
       {allowEmail && (
         <p>
           <Link href="/signin/email_signin" className="font-light text-sm">
-            Sign in via magic link
+            {t('magicLink')}
           </Link>
         </p>
       )}
-      <Separator text="Third-party sign-on" />
-      <OauthSignIn />
+      <p>
+        <Link href="/signin/signup" className="font-light text-sm">
+          {t('noAccount')}
+        </Link>
+      </p>
     </div>
   );
 }

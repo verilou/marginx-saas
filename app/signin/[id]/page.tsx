@@ -1,21 +1,21 @@
-import Logo from '@/components/icons/Logo';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import {
   getAuthTypes,
   getViewTypes,
   getDefaultSignInView,
   getRedirectMethod
 } from '@/utils/auth-helpers/settings';
-import Card from '@/components/ui/Saas/Card';
-import PasswordSignIn from '@/components/ui/Saas/AuthForms/PasswordSignIn';
-import EmailSignIn from '@/components/ui/Saas/AuthForms/EmailSignIn';
-import Separator from '@/components/ui/Saas/AuthForms/Separator';
-import OauthSignIn from '@/components/ui/Saas/AuthForms/OauthSignIn';
-import ForgotPassword from '@/components/ui/Saas/AuthForms/ForgotPassword';
-import UpdatePassword from '@/components/ui/Saas/AuthForms/UpdatePassword';
-import SignUp from '@/components/ui/Saas/AuthForms/Signup';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import PasswordSignIn from '@/components/ui/AuthForms/PasswordSignIn';
+import EmailSignIn from '@/components/ui/AuthForms/EmailSignIn';
+import { Separator } from '@/components/ui/separator';
+import OauthSignIn from '@/components/ui/AuthForms/OauthSignIn';
+import ForgotPassword from '@/components/ui/AuthForms/ForgotPassword';
+import UpdatePassword from '@/components/ui/AuthForms/UpdatePassword';
+import SignUp from '@/components/ui/AuthForms/Signup';
 
 export default async function SignIn({
   params,
@@ -54,59 +54,64 @@ export default async function SignIn({
     return redirect('/signin');
   }
 
+  const t = await getTranslations('signIn');
+
+  const title = (() => {
+    switch (viewProp) {
+      case 'forgot_password':
+        return t('reset_password');
+      case 'update_password':
+        return t('update_password');
+      case 'signup':
+        return t('signup');
+      default:
+        return t('signin');
+    }
+  })();
+
   return (
-    <div className="flex justify-center height-screen-helper">
-      <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 ">
-        <div className="flex justify-center pb-12 ">
-          <Logo width="64px" height="64px" />
-        </div>
-        <Card
-          title={
-            viewProp === 'forgot_password'
-              ? 'Reset Password'
-              : viewProp === 'update_password'
-                ? 'Update Password'
-                : viewProp === 'signup'
-                  ? 'Sign Up'
-                  : 'Sign In'
-          }
-        >
-          {viewProp === 'password_signin' && (
-            <PasswordSignIn
-              allowEmail={allowEmail}
-              redirectMethod={redirectMethod}
-            />
-          )}
-          {viewProp === 'email_signin' && (
-            <EmailSignIn
-              allowPassword={allowPassword}
-              redirectMethod={redirectMethod}
-              disableButton={searchParams.disable_button}
-            />
-          )}
-          {viewProp === 'forgot_password' && (
-            <ForgotPassword
-              allowEmail={allowEmail}
-              redirectMethod={redirectMethod}
-              disableButton={searchParams.disable_button}
-            />
-          )}
-          {viewProp === 'update_password' && (
-            <UpdatePassword redirectMethod={redirectMethod} />
-          )}
-          {viewProp === 'signup' && (
-            <SignUp allowEmail={allowEmail} redirectMethod={redirectMethod} />
-          )}
-          {viewProp !== 'update_password' &&
-            viewProp !== 'signup' &&
-            allowOauth && (
-              <>
-                <Separator text="Third-party sign-in" />
-                <OauthSignIn />
-              </>
-            )}
-        </Card>
-      </div>
-    </div>
+    <Card className="w-full m-auto max-w-sm">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        {viewProp === 'password_signin' && (
+          <PasswordSignIn
+            allowEmail={allowEmail}
+            redirectMethod={redirectMethod}
+          />
+        )}
+        {viewProp === 'email_signin' && (
+          <EmailSignIn
+            allowPassword={allowPassword}
+            redirectMethod={redirectMethod}
+            disableButton={searchParams.disable_button}
+          />
+        )}
+        {viewProp === 'forgot_password' && (
+          <ForgotPassword
+            allowEmail={allowEmail}
+            redirectMethod={redirectMethod}
+            disableButton={searchParams.disable_button}
+          />
+        )}
+        {viewProp === 'update_password' && (
+          <UpdatePassword redirectMethod={redirectMethod} />
+        )}
+        {viewProp === 'signup' && (
+          <SignUp allowEmail={allowEmail} redirectMethod={redirectMethod} />
+        )}
+        {viewProp !== 'update_password' && allowOauth && (
+          <>
+            <div className="flex items-center gap-4">
+              <Separator className="flex-1" />
+              <span className="text-muted-foreground">{t('or')}</span>
+              <Separator className="flex-1" />
+            </div>
+            <OauthSignIn />
+          </>
+        )}
+      </CardContent>
+    </Card>
   );
 }

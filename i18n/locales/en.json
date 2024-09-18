@@ -1,0 +1,54 @@
+{
+  "signIn": {
+    "reset_password": "Reset password",
+    "update_password": "Update Password",
+    "signup": "Sign Up",
+    "signin": "Sign In",
+    "or": "or"
+  },
+  "PasswordSignIn": {
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "pleaseWait": "Please wait",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "magicLink": "Sign in via magic link",
+    "noAccount": "Don't have an account? Sign up"
+  },
+  "EmailSignIn": {
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "signIn": "Sign in",
+    "signInWithPassword": "Sign in with email and password",
+    "noAccount": "Don't have an account? Sign up"
+  },
+  "ForgotPassword": {
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "pleaseWait": "Please wait",
+    "sendEmail": "Send Email",
+    "signInWithPassword": "Sign in with email and password",
+    "magicLink": "Sign in via magic link",
+    "noAccount": "Don't have an account? Sign up"
+  },
+  "SignUp": {
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "pleaseWait": "Please wait",
+    "signUp": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInWithPassword": "Sign in with email and password",
+    "magicLink": "Sign in via magic link"
+  },
+  "UpdatePassword": {
+    "newPassword": "New Password",
+    "passwordPlaceholder": "Password",
+    "confirmPassword": "Confirm New Password",
+    "pleaseWait": "Please wait",
+    "updatePassword": "Update Password"
+  }
+}

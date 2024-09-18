@@ -1,0 +1,54 @@
+{
+  "signIn": {
+    "reset_password": "Reset password",
+    "update_password": "Update Password",
+    "signup": "Sign Up",
+    "signin": "Sign In",
+    "or": "or"
+  },
+  "PasswordSignIn": {
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Mot de passe",
+    "pleaseWait": "Veuillez patienter",
+    "signIn": "Se connecter",
+    "forgotPassword": "Mot de passe oublié?",
+    "magicLink": "Connexion via lien magique",
+    "noAccount": "Pas de compte? Inscrivez-vous"
+  },
+  "EmailSignIn": {
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "signIn": "Se connecter",
+    "signInWithPassword": "Se connecter avec un e-mail et un mot de passe",
+    "noAccount": "Pas de compte? Inscrivez-vous"
+  },
+  "ForgotPassword": {
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "pleaseWait": "Veuillez patienter",
+    "sendEmail": "Envoyer un e-mail",
+    "signInWithPassword": "Se connecter avec un e-mail et un mot de passe",
+    "magicLink": "Connexion via lien magique",
+    "noAccount": "Pas de compte ? Inscrivez-vous"
+  },
+  "SignUp": {
+    "email": "E-mail",
+    "emailPlaceholder": "nom@exemple.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "pleaseWait": "Veuillez patienter",
+    "signUp": "S'inscrire",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signInWithPassword": "Se connecter avec un e-mail et un mot de passe",
+    "magicLink": "Connexion via lien magique"
+  },
+  "UpdatePassword": {
+    "newPassword": "Nouveau mot de passe",
+    "passwordPlaceholder": "Mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "pleaseWait": "Veuillez patienter",
+    "updatePassword": "Mettre à jour le mot de passe"
+  }
+}

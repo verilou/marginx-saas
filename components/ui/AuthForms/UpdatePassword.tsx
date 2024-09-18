@@ -4,9 +4,10 @@ import { updatePassword } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Input } from '../../input';
-import { Button } from '../../button';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface UpdatePasswordProps {
   redirectMethod: string;
@@ -15,17 +16,18 @@ interface UpdatePasswordProps {
 export default function UpdatePassword({
   redirectMethod
 }: UpdatePasswordProps) {
+  const t = useTranslations('UpdatePassword');
   const router = redirectMethod === 'client' ? useRouter() : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setIsSubmitting(true); // Disable the button while the request is being handled
+    setIsSubmitting(true);
     await handleRequest(e, updatePassword, router);
     setIsSubmitting(false);
   };
 
   return (
-    <div className="my-8">
+    <div>
       <form
         noValidate={true}
         className="mb-4"
@@ -33,18 +35,18 @@ export default function UpdatePassword({
       >
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <label htmlFor="password">New Password</label>
+            <label htmlFor="password">{t('newPassword')}</label>
             <Input
               id="password"
-              placeholder="Password"
+              placeholder={t('passwordPlaceholder')}
               type="password"
               name="password"
               autoComplete="current-password"
             />
-            <label htmlFor="passwordConfirm">Confirm New Password</label>
+            <label htmlFor="passwordConfirm">{t('confirmPassword')}</label>
             <Input
               id="passwordConfirm"
-              placeholder="Password"
+              placeholder={t('passwordPlaceholder')}
               type="password"
               name="passwordConfirm"
               autoComplete="current-password"
@@ -54,10 +56,10 @@ export default function UpdatePassword({
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
+                {t('pleaseWait')}
               </>
             ) : (
-              'Update Password'
+              t('updatePassword')
             )}
           </Button>
         </div>

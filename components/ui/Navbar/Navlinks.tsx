@@ -16,8 +16,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger
-} from '../../sheet';
-import { Button } from '../../button';
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
 interface NavlinksProps {

@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
-// Define prop type with allowPassword boolean
 interface EmailSignInProps {
   allowPassword: boolean;
   redirectMethod: string;
@@ -20,17 +20,18 @@ export default function EmailSignIn({
   redirectMethod,
   disableButton
 }: EmailSignInProps) {
+  const t = useTranslations('EmailSignIn');
   const router = redirectMethod === 'client' ? useRouter() : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setIsSubmitting(true); // Disable the button while the request is being handled
+    setIsSubmitting(true);
     await handleRequest(e, signInWithEmail, router);
     setIsSubmitting(false);
   };
 
   return (
-    <div className="my-8">
+    <div>
       <form
         noValidate={true}
         className="mb-4"
@@ -38,10 +39,10 @@ export default function EmailSignIn({
       >
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('email')}</label>
             <Input
               id="email"
-              placeholder="name@example.com"
+              placeholder={t('emailPlaceholder')}
               type="email"
               name="email"
               autoCapitalize="none"
@@ -55,7 +56,7 @@ export default function EmailSignIn({
             disabled={disableButton}
             loading={isSubmitting}
           >
-            Sign in
+            {t('signIn')}
           </Button>
         </div>
       </form>
@@ -63,12 +64,12 @@ export default function EmailSignIn({
         <>
           <p>
             <Link href="/signin/password_signin" className="font-light text-sm">
-              Sign in with email and password
+              {t('signInWithPassword')}
             </Link>
           </p>
           <p>
             <Link href="/signin/signup" className="font-light text-sm">
-              Don't have an account? Sign up
+              {t('noAccount')}
             </Link>
           </p>
         </>

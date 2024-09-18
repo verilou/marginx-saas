@@ -12,8 +12,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from '../../card';
-import { Button } from '../../button';
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 type Subscription = Tables<'subscriptions'>;
 type Price = Tables<'prices'>;
@@ -35,7 +35,7 @@ export default function CustomerPortalForm({ subscription }: Props) {
   const router = useRouter();
   const currentPath = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  // need to use next-intl lib here
   const subscriptionPrice =
     subscription &&
     new Intl.NumberFormat('en-US', {

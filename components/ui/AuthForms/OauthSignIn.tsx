@@ -3,7 +3,7 @@
 import { signInWithOAuth } from '@/utils/auth-helpers/client';
 import { type Provider } from '@supabase/supabase-js';
 import { useState } from 'react';
-import { Button } from '../../button';
+import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 
 type OAuthProviders = {
@@ -32,7 +32,7 @@ export default function OauthSignIn() {
   };
 
   return (
-    <div className="mt-8">
+    <div>
       {oAuthProviders.map((provider) => (
         <form
           key={provider.name}
@@ -48,8 +48,10 @@ export default function OauthSignIn() {
               </>
             ) : (
               <>
-                <span className="mr-2">{provider.icon}</span>
-                <span>{provider.displayName}</span>
+                <p>
+                  Se connecter avec{' '}
+                  <span className="font-bold">{provider.displayName}</span>
+                </p>
               </>
             )}
           </Button>
