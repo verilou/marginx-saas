@@ -15,6 +15,28 @@ export type CarAd = {
   publishDate: string;
 };
 
+export type CarAdFilter = {
+  title: string;
+  brand: string;
+  model: string;
+  year: string;
+  price: string;
+  mileage: string;
+  engineType: string;
+  gearbox: string;
+  location: string;
+};
+
+export type carAdKey =
+  | 'brand'
+  | 'model'
+  | 'year'
+  | 'price'
+  | 'mileage'
+  | 'engineType'
+  | 'gearbox'
+  | 'location';
+
 export type colors =
   | 'noir'
   | 'marron'

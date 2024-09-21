@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { colorsList } from './constants';
+import { colorsList } from '@/components/ui/DataTable/constants';
 import { timeSince } from '@/utils/helpers';
 
 const handleOpenNewTabs = (url: string) => {

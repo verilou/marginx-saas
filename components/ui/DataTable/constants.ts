@@ -9,3 +9,8 @@ export const colorsList = {
   orange: 'orange',
   argent: 'silver'
 };
+
+export const gearbox_mapping = {
+  '1': 'manual',
+  '2': 'automatic'
+};

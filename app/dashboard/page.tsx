@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { columns } from './column';
-import { DataTable } from './data-table';
+import { columns } from '../../components/ui/DataTable/column';
+import { DataTable } from '../../components/ui/DataTable/data-table';
 import {
   Area,
   AreaChart,
@@ -15,34 +15,34 @@ import {
 
 import { MapPin } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { addGivenUrlParams } from '@/lib/utils';
-import { AnalyticsApi, CarAd } from '@/types/types_analitycs';
+import { AnalyticsApi, CarAd, CarAdFilter } from '@/types/types_analitycs';
+import { FilterForm } from '@/components/ui/DataTable/Filter/filter';
 
 export default function Dashboard() {
   const [ads, setAds] = useState<CarAd[]>([]);
   const [mileage, setMileage] = useState(50000);
 
+  const fetchAnalytics = async (filter: CarAdFilter | null = null) => {
+    const response = await fetch(
+      addGivenUrlParams('/api/analytics', { action: 'listing', ...filter })
+    );
+    const data = (await response.json()) as AnalyticsApi;
+    console.log('Analytics:', data.results);
+    const colors: string[] = data.results.reduce((prev: string[], acc) => {
+      console.log(prev);
+      if (!prev.includes(acc.color) && acc.color !== null) {
+        prev.push(acc.color);
+      }
+      return prev;
+    }, []);
+
+    console.log(colors);
+
+    setAds(data.results);
+  };
+
   useEffect(() => {
-    const fetchAnalytics = async () => {
-      const response = await fetch(
-        addGivenUrlParams('/api/analytics', { action: 'listing' })
-      );
-      const data = (await response.json()) as AnalyticsApi;
-      console.log('Analytics:', data.results);
-      const colors: string[] = data.results.reduce((prev: string[], acc) => {
-        console.log(prev);
-        if (!prev.includes(acc.color) && acc.color !== null) {
-          prev.push(acc.color);
-        }
-        return prev;
-      }, []);
-
-      console.log(colors);
-
-      setAds(data.results);
-    };
     fetchAnalytics();
   }, []);
 
@@ -55,17 +55,16 @@ export default function Dashboard() {
     { name: 'Jun', total: 23000 }
   ];
 
+  const handleFilterChange = (filters: CarAdFilter) => {
+    console.log('Filter changed', filters);
+    fetchAnalytics(filters);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Car Analytics Dashboard</h1>
+      <FilterForm filterSubmit={handleFilterChange} />
       <div className="grid gap-6  grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        <div className="flex col-span-full w-full max-w-sm items-center space-x-2">
-          <Input
-            type="text"
-            placeholder="Search for a car model, brand or color"
-          />
-          <Button type="submit">Search</Button>
-        </div>
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>Price History</CardTitle>
